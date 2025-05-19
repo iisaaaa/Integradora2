@@ -4,13 +4,13 @@ public class Document extends Deliverable{
     private String url;
     private String cloudService;
 
-    public Document(String name, DevelopmentPhase phase, String url, String cloudService){
-        super(name, phase);
+    public Document(String name, DevelopmentPhase phase, String url, String cloudService, String title, String link){
+        super(title,link,phase);
         this.url = url;
         this.cloudService = cloudService;
     }
 
-    @Override
+    
     protected String generateId() {
         return "doc-" + System.currentTimeMillis();
     }

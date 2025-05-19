@@ -1,9 +1,17 @@
 package model;
 
-import exceptions.*;
-import java.io.*;
-import java.util.*;
-import java.util.regex.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import exceptions.InvalidFileException;
+import java.io.File;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.FileNotFoundException;
+import exceptions.InvalidIdException;
+import java.io.Serializable;
 
 public class Controller implements Serializable{
     private List<Course> courses;
@@ -51,7 +59,7 @@ public class Controller implements Serializable{
                         addCourse(new Course(parts[1], parts[2], parts[3], Integer.parseInt(parts[4])));
                         break;
                     case "PROFESSOR" :
-                        addProfessor(new Professors(parts[1], parts[2], parts[3], parts[4], parts[5]));
+                        addProfessor(new Professors(parts[1], parts[2], parts[3], parts[4]));
                         break;
                     case "PROJECT": 
                         String courseCode = parts[1];
@@ -94,12 +102,24 @@ public class Controller implements Serializable{
         }
     }
 
+    // public String getCourseByID(String courseID){
+    //     for(Course c: courses){
+    //         if(c.getCode().equals(courseID)){
+    //             return toString();
+    //         }
+    //     }
+    //     return "Not found";
+    // }
+
     private void loadCoursesFormFile(File file) throws IOException{
-        Buff reader = new BufferedReader(new FileReader(file));
+        BufferedReader reader = new BufferedReader(new FileReader(file));
         String line;
         while ((line = reader.readLine()) != null){
             String[] parts = line.split("-");
-            addCourse(new Course(parts[0], parts[1], parts[2], Integer.parseInt(parts[3])));
+            try {
+                addCourse(new Course(parts[0], parts[1], parts[2], Integer.parseInt(parts[3])));
+            } catch (InvalidIdException e) {
+            }
         }
         reader.close();
     }
@@ -109,7 +129,10 @@ public class Controller implements Serializable{
         String line;
         while((line = reader.readLine()) != null){
             String[] parts = line.split("-");
-            addProfessor(new Professors(parts[0], parts[1], parts[2], parts[3], parts[4]));
+            try {
+                addProfessor(new Professors(parts[0], parts[1], parts[2], parts[3]));
+            } catch (InvalidIdException e) {
+            }
         }
         reader.close();
     }
@@ -119,16 +142,13 @@ public class Controller implements Serializable{
         String line;
         while ((line = reader.readLine()) != null){
             String[] parts = line.split("-");
-            addProject(new Project(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5], parts[6], parts[7], parts[8], parts[9]));
+            try {
+                addProject(new Project(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5], parts[6], parts[7], parts[8]));
+            } catch (Exception e) {
+            }
+            
         }
         reader.close();
-    }
-
-    public void addProfessor(Professors professors) throws InvalidIdException{
-        if (getProfessorById(professors.getId()) != null){
-            throw new InvalidIdException("Professor whit This Id already exits");
-        }
-        professors.add(professors);
     }
 
     public List<Project> serachProjectsByKeywords(String [] keywords) {
@@ -188,14 +208,23 @@ public class Controller implements Serializable{
     public Professors getProfessorsById (String id){
         for (Professors professor : professors) {
             if (professor.getId().equals(id)){
-                return course;
+                return professor;
+            }
+        }
+        return null;
+    }
+
+    public Course getCourseByID(String id){
+        for(Course c: courses){
+            if(c.getCode().equals(id)){
+                return c;
             }
         }
         return null;
     }
 
     public void addCourse(Course course) throws InvalidIdException{
-        if(getCourseById(course.getCode()) != null){
+        if(getCourseByID(course.getCode()) != null){
             throw new InvalidIdException("Course with this Id already exits");
         }
         courses.add(course);
@@ -213,6 +242,12 @@ public class Controller implements Serializable{
             throw new InvalidIdException("Project with this Id already exits");
         }
         projects.add(project);
+    }
+
+   public void deleteDeliverable(String projectId, String resultId, String deliverableId){
+        for(Project p: projects){
+            //No se como quieras hacer este metodo.
+     }
     }
 }
 

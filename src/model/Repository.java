@@ -4,13 +4,13 @@ public class Repository extends Deliverable{
     private String url;
     private int fileCount;
 
-    public Repository(String name, DevelopmentPhase phase, String url, int fileCount) {
-        super(name, phase);
+    public Repository(String name, DevelopmentPhase phase, String url, int fileCount, String title, String link) {
+        super(title,link,phase);
         this.url = url;
         this.fileCount = fileCount;
     }
 
-    @Override
+
     protected String generateId() {
         return"repo-" + System.currentTimeMillis();
     }

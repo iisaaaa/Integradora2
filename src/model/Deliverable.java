@@ -5,12 +5,14 @@ import java.util.UUID;
 public class Deliverable {
     private String id;
     private String title;
-    private String link; // Link al archivo, puede ser Drive o similar
+    private String link;
+    private DevelopmentPhase phase; // Link al archivo, puede ser Drive o similar
 
-    public Deliverable(String title, String link) {
+    public Deliverable(String title, String link, DevelopmentPhase phase) {
         this.id = generateDeliverableId();
         this.title = title;
         this.link = link;
+        this.phase=phase;
     }
 
     private String generateDeliverableId() {

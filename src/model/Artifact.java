@@ -3,12 +3,12 @@ package model;
 public class Artifact extends Deliverable{
     private ArtifactType type;
 
-    public Artifact(String name, DevelopmentPhase phase, ArtifactType type){
-        super(name, phase);
+    public Artifact(String name, DevelopmentPhase phase, ArtifactType type, String id, String title, String link){
+        super(title,link,phase);
         this.type = type;
     }
 
-    @Override
+    
     protected String generateId(){
         return "Art-" + System.currentTimeMillis();
     }

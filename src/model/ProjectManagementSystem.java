@@ -34,7 +34,12 @@ public class ProjectManagementSystem {
         if (professor == null || controller.getProfessorsById(professor.getId()) == null) {
             throw new ProfessorNotFoundException("Professor not found with Id: " + professor.getId());
         }
-        controller.addProfessor(professor);
+        try {
+            controller.addProfessor(professor);
+        } catch (InvalidIdException e) {
+            //LO QUE SE PONE ACA DEPNDE DE LO QUE QUERAS PODES RETORNAR UN STRING CON MENSAJE DE ERROR 
+        }
+        
     }
 
 
@@ -58,6 +63,8 @@ public class ProjectManagementSystem {
         return controller.searchProjectsByKeywords(keywords);
     }
 
+    //todos estos errores de arriba son por que no tenes los metodos en el controller, tienes que hacerlos
+    
     public List<Project> getProjectsWithoutResults() {
         return controller.getProjectsWithoutResults();
     }
@@ -66,8 +73,7 @@ public class ProjectManagementSystem {
         return controller.getProjectsBySemester(semester);
     }
 
-    public void deleteDeliverable(String projectId, String resultId, String deliverableId) 
-            throws ProjectNotFoundException {
+    public void deleteDeliverable(String projectId, String resultId, String deliverableId) throws ProjectNotFoundException {
         controller.deleteDeliverable(projectId, resultId, deliverableId);
     }
 }
